@@ -10,18 +10,48 @@ import {
 import { ExpandMore, ExpandLess, Check, Close } from "@mui/icons-material";
 import styled from "styled-components";
 import { calculateAge } from "../utils/calculateAge";
+import { useForm, Controller } from "react-hook-form";
+import * as Yup from "yup";
+import { yupResolver } from "@hookform/resolvers/yup";
+
+// Yup validation schema
+const schema = Yup.object().shape({
+  name: Yup.string().required("Name is required"),
+  age: Yup.string().required("Age is required"),
+  gender: Yup.string().required("Gender is required"),
+  country: Yup.string().required("Country is required"),
+  description: Yup.string().required("Description is required"),
+});
 
 const CelebrityAccordion = ({
   user,
   isEditing,
-  editData,
   handleAccordionToggle,
   handleEditClick,
-  handleInputChange,
   handleCloseClick,
   handleDeleteClick,
   accordionOpen,
 }) => {
+  const {
+    control,
+    handleSubmit,
+    setValue,
+    formState: { errors },
+  } = useForm({
+    resolver: yupResolver(schema),
+    defaultValues: {
+      name: `${user.first} ${user.last}`,
+      gender: user.gender || "",
+      country: user.country || "",
+      description: user.description || "",
+      age: calculateAge(user.dob) || "",
+    },
+  });
+
+  const onSubmit = (data) => {
+    handleEditClick(user.id, data);
+  };
+
   return (
     <CustomAccordion expanded={accordionOpen === user.id}>
       <AccordionSummary
@@ -37,18 +67,25 @@ const CelebrityAccordion = ({
             height="50"
             className="user-image"
           />
-          <Input
-            defaultValue={`${user.first} ${user.last}`}
-            onChange={(e) => handleInputChange(user.id, e)}
+          <Controller
+            control={control}
             name="name"
-            disableUnderline
-            disabled={isEditing !== user.id}
-            className={`editable-input ${
-              isEditing === user.id ? "editable" : "disabled-input"
-            }`}
-            onClick={(e) => e.stopPropagation()}
-            sx={{ color: "black", fontWeight: "bold", pl: 1 }}
+            render={({ field }) => (
+              <Input
+                {...field}
+                disableUnderline
+                disabled={isEditing !== user.id}
+                className={`editable-input ${
+                  isEditing === user.id ? "editable" : "disabled-input"
+                }`}
+                onClick={(e) => e.stopPropagation()}
+                sx={{ color: "black", fontWeight: "bold", pl: 1 }}
+              />
+            )}
           />
+          {errors.name && (
+            <span className="error-msg">{errors.name.message}</span>
+          )}
         </div>
       </AccordionSummary>
       <AccordionDetails>
@@ -61,14 +98,26 @@ const CelebrityAccordion = ({
             >
               Age
             </span>
-            <Input
-              placeholder="Age"
-              defaultValue={calculateAge(user.dob)}
-              disableUnderline
-              disabled={isEditing !== user.id}
-              className={`input ${isEditing === user.id ? "editable" : ""}`}
-              sx={{ pl: 1 }}
+            <Controller
+              control={control}
+              name="age"
+              render={({ field }) => (
+                <Input
+                  {...field}
+                  placeholder="Age"
+                  disableUnderline
+                  disabled={isEditing !== user.id}
+                  className={`input ${isEditing === user.id ? "editable" : ""}`}
+                  sx={{ pl: 1 }}
+                />
+              )}
             />
+            {errors.gender && (
+              <span className="error-msg">{errors.age.message}</span>
+            )}
+            {errors.name && (
+              <span className="error-msg">{errors.age.message}</span>
+            )}
           </LabelContainer>
           <LabelContainer>
             <span
@@ -78,16 +127,23 @@ const CelebrityAccordion = ({
             >
               Gender
             </span>
-            <Input
-              placeholder="Gender"
-              defaultValue={user.gender || ""}
-              onChange={(e) => handleInputChange(user.id, e)}
+            <Controller
+              control={control}
               name="gender"
-              disableUnderline
-              disabled={isEditing !== user.id}
-              className={`input ${isEditing === user.id ? "editable" : ""}`}
-              sx={{ pl: 1 }}
+              render={({ field }) => (
+                <Input
+                  {...field}
+                  placeholder="Gender"
+                  disableUnderline
+                  disabled={isEditing !== user.id}
+                  className={`input ${isEditing === user.id ? "editable" : ""}`}
+                  sx={{ pl: 1 }}
+                />
+              )}
             />
+            {errors.gender && (
+              <span className="error-msg">{errors.gender.message}</span>
+            )}
           </LabelContainer>
           <LabelContainer>
             <span
@@ -97,37 +153,51 @@ const CelebrityAccordion = ({
             >
               Country
             </span>
-            <Input
-              placeholder="Country"
-              defaultValue={user.country || ""}
-              onChange={(e) => handleInputChange(user.id, e)}
+            <Controller
+              control={control}
               name="country"
-              disableUnderline
-              disabled={isEditing !== user.id}
-              className={`input ${isEditing === user.id ? "editable" : ""}`}
-              sx={{ pl: 1 }}
+              render={({ field }) => (
+                <Input
+                  {...field}
+                  placeholder="Country"
+                  disableUnderline
+                  disabled={isEditing !== user.id}
+                  className={`input ${isEditing === user.id ? "editable" : ""}`}
+                  sx={{ pl: 1 }}
+                />
+              )}
             />
+            {errors.country && (
+              <span className="error-msg">{errors.country.message}</span>
+            )}
           </LabelContainer>
         </GridContainer>
         <LabelContainer>
           <span className="label">Description</span>
-          <TextField
-            placeholder="Description"
-            defaultValue={user.description || ""}
-            onChange={(e) => handleInputChange(user.id, e)}
+          <Controller
+            control={control}
             name="description"
-            multiline
-            rows={4}
-            variant="outlined"
-            fullWidth
-            className={`input ${isEditing === user.id ? "editable" : ""}`}
-            disabled={isEditing !== user.id}
+            render={({ field }) => (
+              <TextField
+                {...field}
+                placeholder="Description"
+                multiline
+                rows={4}
+                variant="outlined"
+                fullWidth
+                className={`input ${isEditing === user.id ? "editable" : ""}`}
+                disabled={isEditing !== user.id}
+              />
+            )}
           />
+          {errors.description && (
+            <span className="error-msg">{errors.description.message}</span>
+          )}
         </LabelContainer>
         <div className="action-buttons">
           {isEditing === user.id ? (
             <>
-              <IconButton onClick={() => handleEditClick(user.id)}>
+              <IconButton onClick={handleSubmit(onSubmit)}>
                 <Check className="check-action-icon" />
               </IconButton>
               <IconButton onClick={() => handleCloseClick(user.id)}>
@@ -236,6 +306,12 @@ const CustomAccordion = styled(Accordion)`
   .disabled-input {
     font-weight: bold;
     color: black !important;
+  }
+
+  .error-msg {
+    font-size: 11px;
+    color: #ff0000;
+    margin-left: 4px;
   }
 `;
 

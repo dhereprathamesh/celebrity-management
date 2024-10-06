@@ -56,6 +56,7 @@ const CelebrityList = () => {
 
   const handleCloseClick = (id) => {
     setIsEditing(null);
+    setAccordionOpen(null);
     setEditData((prev) => {
       const { [id]: _, ...rest } = prev;
       return rest;
