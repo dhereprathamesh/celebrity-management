@@ -18,12 +18,6 @@ const SearchInput = ({ searchQuery, setSearchQuery }) => {
       className="search-input"
       value={searchQuery}
       onChange={(e) => setSearchQuery(e.target.value)}
-      sx={{
-        width: "60%",
-        border: "2px solid #a6a5a5",
-        borderRadius: "13px",
-        padding: "5px 10px",
-      }}
     />
   );
 };
