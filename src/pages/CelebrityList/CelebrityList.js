@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
-import Celebrities from "../data/celebrities.json";
-import DeleteDialog from "../components/DeleteDialog";
+import Celebrities from "../../data/celebrities.json";
+import DeleteDialog from "../../components/DeleteDialog";
 import { toast } from "react-hot-toast";
-import SearchInput from "../components/SearchInput";
-import CelebrityAccordion from "../components/CelebrityAccordion ";
-import { calculateAge } from "../utils/calculateAge";
+import SearchInput from "../../components/SearchInput";
+import CelebrityAccordion from "../../components/CelebrityAccordion ";
+import { calculateAge } from "../../utils/calculateAge";
 
 const CelebrityList = () => {
   const [users, setUsers] = useState([]);

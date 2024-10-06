@@ -1,7 +1,7 @@
 import { Toaster } from "react-hot-toast";
 import "./App.css";
-import CelebrityList from "./CelebrityList/CelebrityList";
 import Navbar from "./components/Navbar";
+import CelebrityList from "./pages/CelebrityList/CelebrityList";
 
 function App() {
   return (
