@@ -11,6 +11,12 @@ This is a **Celebrity Management App** built with React. It allows users to view
 - **Responsive Design**: Adjusts seamlessly to different screen sizes, ensuring a great experience on mobile, tablet, and desktop devices.
 - **Form Validation**: Ensures that only valid data is entered when editing celebrity information.
 
+## Live Demo
+
+You can view the live version of the app here:
+
+[Live Demo](https://6702ceab19eada91ac5f1d64--cosmic-dusk-7f12e5.netlify.app/)
+
 ## Tech Stack
 
 - **React** for the UI.
@@ -66,4 +72,3 @@ The app is fully responsive and adapts to different screen sizes, making it easy
 ## License
 
 This project is open-source and free to use.
-
